@@ -479,7 +479,7 @@
                 <aside id="class-panel" class="class-panel">
                     <div class="panel-header">
                         <h2 id="panel-class-name">Название</h2>
-                        <button id="panel-close-btn" class="close-btn">&times;</button>
+                        <button id="panel-close-btn" class="close-btn">×</button>
                     </div>
                     
                     <div class="panel-tabs">
@@ -512,7 +512,7 @@
 
     <div id="update-modal" class="modal">
         <div class="modal-content">
-            <button id="modal-close-btn" class="close-btn" style="position: absolute; top: 10px; right: 15px;">&times;</button>
+            <button id="modal-close-btn" class="close-btn" style="position: absolute; top: 10px; right: 15px;">×</button>
             <h3>Синхронизация гайдов</h3>
             <div id="modal-auth-step">
                 <input type="password" id="secret-password" placeholder="Введите пароль">
@@ -557,13 +557,15 @@
         });
 
         function loadClassesData() {
-            // Обновили версию до v11 для сброса сломанных картинок
             const localData = localStorage.getItem('csk_classes_data_v11');
             if (localData) {
                 currentClasses = JSON.parse(localData);
                 renderGrid(currentClasses);
+                // Даже если данные есть, тихонько обновляем их в фоне, чтобы пользователь всегда видел актуальное при следующем заходе
+                fetchSheetsData(true); 
             } else {
-                renderEmptyState("Данные отсутствуют. Нажмите секретную область в правом нижнем углу для загрузки.");
+                // Если у нового пользователя пусто — автоматически качаем актуальную таблицу без паролей
+                fetchSheetsData(false);
             }
         }
 
@@ -669,7 +671,7 @@
 
         function closePanel() {
             selectedClassId = null;
-            document.querySelectorAll('.class-card').forEach(card => card.classList.remove('active'));
+            document.querySelectorAll('.class-card').forEach(card => card.remove('active'));
             classPanel.style.display = 'none';
         }
 
@@ -732,7 +734,7 @@
                 }
             });
 
-            syncNowBtn.addEventListener('click', fetchSheetsData);
+            syncNowBtn.addEventListener('click', () => fetchSheetsData(false));
         }
 
         function showStatus(text, className) {
@@ -742,22 +744,16 @@
 
         function cleanDriveUrl(url) {
             if (!url) return '';
-            
-            // В прошлой версии регулярное выражение съедало символ "=", поэтому ID не находился
-            // Теперь оставляем равно в покое, убираем только кавычки, скобки и формулу
-            let cleanUrl = url.trim().replace(/&amp;/g, '&').replace(/["'()]/g, '').replace(/HYPERLINK/i, '');
-            
+            let cleanUrl = url.trim().replace(/&/g, '&').replace(/["'()]/g, '').replace(/HYPERLINK/i, '');
             let fileId = '';
             if (cleanUrl.includes('id=')) {
                 fileId = cleanUrl.split('id=')[1].split('&')[0];
             } else if (cleanUrl.includes('/file/d/')) {
                 fileId = cleanUrl.split('/file/d/')[1].split('/')[0];
             }
-            
             if (fileId) {
-                return `https://lh3.googleusercontent.com/d/${fileId}`;
+                return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
             }
-            
             return cleanUrl;
         }
 
@@ -766,11 +762,9 @@
             let row = [];
             let current = '';
             let insideQuotes = false;
-            
             for (let i = 0; i < text.length; i++) {
                 const char = text[i];
                 const nextChar = text[i + 1];
-                
                 if (char === '"') {
                     if (insideQuotes && nextChar === '"') {
                         current += '"';
@@ -793,16 +787,21 @@
                     current += char;
                 }
             }
-            
             row.push(current);
             rows.push(row);
             return rows;
         }
 
-        async function fetchSheetsData() {
-            showStatus('Синхронизация...', 'status-loading');
+        async function fetchSheetsData(isBackground = false) {
+            if (!isBackground) {
+                showStatus('Синхронизация...', 'status-loading');
+            } else {
+                console.log('Фоновое обновление данных из таблицы...');
+            }
+
             try {
-                const response = await fetch(GOOGLE_SHEET_CSV_URL);
+                // Добавляем случайный параметр против жесткого кэширования ответов браузерами
+                const response = await fetch(GOOGLE_SHEET_CSV_URL + "&nocache=" + new Date().getTime());
                 if (!response.ok) throw new Error('Ошибка доступа к Google Таблице.');
                 
                 const rawText = await response.text();
@@ -852,15 +851,20 @@
                     currentClasses = parsedClasses;
                     localStorage.setItem('csk_classes_data_v11', JSON.stringify(currentClasses));
                     renderGrid(currentClasses);
-                    showStatus('Синхронизация успешна!', 'status-success');
-                    setTimeout(() => updateModal.classList.remove('flex'), 1200);
-                } else {
+                    
+                    if (!isBackground) {
+                        showStatus('Синхронизация успешна!', 'status-success');
+                        setTimeout(() => updateModal.classList.remove('flex'), 1200);
+                    }
+                } else if (!isBackground) {
                     showStatus('В таблице не обнаружены валидные строки.', 'status-error');
                 }
 
             } catch (error) {
                 console.error(error);
-                showStatus('Ошибка импорта: ' + error.message, 'status-error');
+                if (!isBackground) {
+                    showStatus('Ошибка импорта: ' + error.message, 'status-error');
+                }
             }
         }
 
