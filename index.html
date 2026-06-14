@@ -150,8 +150,10 @@
         .classes-grid {
             flex: 1;
             display: grid;
-            grid-template-columns: repeat(6, minmax(0, 1fr));
+            /* Умная сетка: карточки от 120px, переносятся на новую строку без изменения размера */
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 16px;
+            align-content: start;
         }
 
         .class-card {
@@ -183,6 +185,7 @@
             text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
             text-align: center;
             padding: 8px;
+            word-wrap: break-word;
         }
 
         .class-card:hover {
@@ -441,12 +444,12 @@
         .hidden { display: none !important; }
 
         @media (max-width: 1200px) {
-            .classes-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+            .classes-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
             .class-panel { width: 45%; }
         }
 
         @media (max-width: 768px) {
-            .classes-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .classes-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
             .class-panel {
                 position: fixed;
                 top: 0;
@@ -557,13 +560,15 @@
         });
 
         function loadClassesData() {
-            // Версия v12
-            const localData = localStorage.getItem('csk_classes_data_v12');
+            // Версия v13
+            const localData = localStorage.getItem('csk_classes_data_v13');
             if (localData) {
                 currentClasses = JSON.parse(localData);
                 renderGrid(currentClasses);
                 fetchSheetsData(true); 
             } else {
+                // Визуальный индикатор для новых пользователей перед началом автозагрузки
+                renderEmptyState("Загрузка базы данных Кристаликса...");
                 fetchSheetsData(false);
             }
         }
@@ -744,10 +749,9 @@
         function cleanDriveUrl(url) {
             if (!url) return '';
             
-            // Чистим мусор вокруг ссылок
             let cleanUrl = url.trim().replace(/["'()]/g, '').replace(/HYPERLINK/i, '');
-            
             let fileId = '';
+            
             if (cleanUrl.includes('id=')) {
                 fileId = cleanUrl.split('id=')[1].split('&')[0];
             } else if (cleanUrl.includes('/file/d/')) {
@@ -755,7 +759,6 @@
             }
             
             if (fileId) {
-                // Стабильный глобальный эндпоинт для рендеринга миниатюр Диска
                 return `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`;
             }
             
@@ -851,7 +854,7 @@
 
                 if (parsedClasses.length > 0) {
                     currentClasses = parsedClasses;
-                    localStorage.setItem('csk_classes_data_v12', JSON.stringify(currentClasses));
+                    localStorage.setItem('csk_classes_data_v13', JSON.stringify(currentClasses));
                     renderGrid(currentClasses);
                     
                     if (!isBackground) {
@@ -859,12 +862,14 @@
                         setTimeout(() => updateModal.classList.remove('flex'), 1200);
                     }
                 } else if (!isBackground) {
+                    renderEmptyState('В таблице не обнаружены валидные строки.');
                     showStatus('В таблице не обнаружены валидные строки.', 'status-error');
                 }
 
             } catch (error) {
                 console.error(error);
                 if (!isBackground) {
+                    renderEmptyState('Ошибка загрузки: ' + error.message);
                     showStatus('Ошибка импорта: ' + error.message, 'status-error');
                 }
             }
