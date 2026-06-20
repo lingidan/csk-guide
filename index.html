@@ -150,8 +150,7 @@
         .classes-grid {
             flex: 1;
             display: grid;
-            /* Умная сетка: карточки от 120px, переносятся на новую строку без изменения размера */
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(9, 1fr);
             gap: 16px;
             align-content: start;
         }
@@ -204,13 +203,19 @@
             border: 1px solid var(--border-gold);
             border-radius: 6px;
             padding: 24px;
-            display: none;
+            display: flex;
             flex-direction: column;
             position: sticky;
             top: 90px;
             max-height: calc(100vh - 120px);
+            overflow-x: hidden;
             overflow-y: auto;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: max-width 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .panel-header {
@@ -444,12 +449,12 @@
         .hidden { display: none !important; }
 
         @media (max-width: 1200px) {
-            .classes-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+            .classes-grid { grid-template-columns: repeat(7, 1fr); }
             .class-panel { width: 45%; }
         }
 
         @media (max-width: 768px) {
-            .classes-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+            .classes-grid { grid-template-columns: repeat(5, 1fr); }
             .class-panel {
                 position: fixed;
                 top: 0;
@@ -459,6 +464,547 @@
                 max-height: 100vh;
                 z-index: 200;
             }
+            .class-panel.panel-visible {
+                max-width: 100%;
+            }
+        }
+
+        .class-panel.panel-visible {
+            max-width: 1000px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .social-footer {
+            border-top: 1px solid var(--border-gold);
+            padding: 36px 20px 30px;
+            text-align: center;
+            background: rgba(14, 3, 3, 0.5);
+        }
+
+        .social-footer-title {
+            font-family: var(--font-headers);
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .social-btn svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent-gold);
+            transition: fill 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .social-btn:hover {
+            border-color: var(--accent-gold);
+            background: rgba(212, 175, 55, 0.12);
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .social-btn:hover svg {
+            fill: var(--light-gold);
+        }
+
+        /* ===== NAV DISABLED ===== */
+        .nav-btn.disabled {
+            opacity: 0.4;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        /* ===== PAGE SECTIONS ===== */
+        .page-section {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-section.hidden {
+            display: none !important;
+        }
+
+        /* ===== HOME HERO ===== */
+        .home-hero {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 70px 20px 50px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .home-hero img { flex-shrink: 0; }
+
+        .home-hero-text { flex: 1; text-align: left; }
+
+        .home-hero h1 {
+            font-family: var(--font-headers);
+            font-size: 2.2rem;
+            color: var(--light-gold);
+            text-shadow: 0 0 30px rgba(240, 204, 90, 0.25);
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+
+        .home-hero p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 560px;
+            margin: 0 0 28px;
+            line-height: 1.65;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-secondary-btn {
+            background: transparent;
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            padding: 14px 32px;
+            font-family: var(--font-headers);
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 6px;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .hero-secondary-btn:hover {
+            background: rgba(212,175,55,0.12);
+        }
+
+        .hero-cta-btn {
+            background: var(--accent-gold);
+            color: var(--bg-main);
+            border: none;
+            padding: 14px 40px;
+            font-family: var(--font-headers);
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 6px;
+            letter-spacing: 0.04em;
+            transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+        }
+
+        .hero-cta-btn:hover {
+            background: var(--light-gold);
+            box-shadow: 0 0 24px rgba(212, 175, 55, 0.45);
+            transform: translateY(-2px);
+        }
+
+        /* ===== HOME CARDS ===== */
+        .home-card-btn {
+            align-self: flex-start;
+            background: var(--accent-gold);
+            color: var(--bg-main);
+            border: none;
+            padding: 9px 22px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+
+        .home-card-btn:hover:not(:disabled) {
+            background: var(--light-gold);
+        }
+
+        .home-card-btn:disabled {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            cursor: default;
+        }
+
+        /* ===== VIDEOS SECTION ===== */
+        .videos-section {
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .videos-section h2 {
+            font-family: var(--font-headers);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            padding-left: 4px;
+        }
+
+        /* Рамка последнего видео */
+        .video-latest-frame {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .video-latest-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .video-latest-row #sticker-popcorn {
+            flex-shrink: 0;
+            align-self: center;
+        }
+
+        .video-latest-row #latest-video-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .video-latest-hint {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-align: center;
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .video-latest-row { flex-direction: column; }
+            .video-latest-row #sticker-popcorn { width: 160px !important; }
+        }
+
+        /* Новое видео */
+        .latest-video-card {
+            display: flex;
+            gap: 24px;
+            background: var(--bg-panel);
+            border: 1px solid rgba(212,175,55,0.35);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 28px;
+            text-decoration: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .latest-video-card:hover {
+            border-color: rgba(212,175,55,0.7);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+        }
+
+        .latest-thumb-wrap {
+            position: relative;
+            flex-shrink: 0;
+            width: 320px;
+        }
+
+        .latest-thumb-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent-gold);
+            color: var(--bg-main);
+            font-family: var(--font-headers);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.25);
+            transition: background 0.2s;
+        }
+
+        .latest-video-card:hover .play-overlay {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .play-overlay svg {
+            width: 52px;
+            height: 52px;
+            fill: rgba(255,255,255,0.9);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6));
+        }
+
+        .latest-video-info {
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .latest-video-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .latest-video-title {
+            font-family: var(--font-headers);
+            color: var(--light-gold);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .watch-btn {
+            align-self: flex-start;
+            background: var(--accent-gold);
+            color: var(--bg-main);
+            border: none;
+            padding: 9px 22px;
+            font-weight: 700;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background 0.2s;
+            margin-top: 4px;
+        }
+
+        .watch-btn:hover { background: var(--light-gold); }
+
+        /* Сетка остальных видео */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .video-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            overflow: hidden;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+
+        .video-card:hover {
+            border-color: rgba(212,175,55,0.4);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            transform: translateY(-2px);
+        }
+
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            background: #111;
+        }
+
+        .video-card-info {
+            padding: 12px 14px;
+        }
+
+        .video-card-title {
+            font-family: var(--font-headers);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .videos-empty {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            padding: 12px 0;
+        }
+
+        @media (max-width: 768px) {
+            .latest-video-card { flex-direction: column; }
+            .latest-thumb-wrap { width: 100%; height: 200px; }
+            .latest-video-info { padding: 18px 16px; }
+            .videos-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .videos-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== TELEGRAM SECTION ===== */
+        .telegram-section {
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto 60px;
+            padding: 32px;
+            background: rgba(212,175,55,0.08);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .telegram-section img {
+            flex-shrink: 0;
+            width: clamp(220px, 32vw, 380px);
+            height: auto;
+        }
+
+        .telegram-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .telegram-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            text-align: left;
+            margin: 0;
+        }
+
+        .telegram-content .home-card-btn {
+            align-self: flex-start;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            .telegram-section { flex-direction: column; text-align: center; padding: 20px 16px; }
+            .telegram-section img { width: clamp(180px, 60vw, 280px); margin: 0 auto; }
+            .telegram-content { align-items: center; }
+            .telegram-content p { text-align: center; }
+            .telegram-content .home-card-btn { align-self: center; }
+        }
+
+        /* ===== AUTHOR BLOCK ===== */
+        .author-section {
+            max-width: 760px;
+            width: 100%;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .author-section h2 {
+            font-family: var(--font-headers);
+            color: var(--text-secondary);
+            font-size: 1rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            padding-left: 4px;
+        }
+
+        .author-block {
+            display: flex;
+            align-items: flex-start;
+            gap: 32px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            padding: 36px;
+        }
+
+        .author-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            object-fit: cover;
+            flex-shrink: 0;
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.2);
+        }
+
+        .author-avatar-fallback {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+            background: linear-gradient(135deg, #1a0505, #200808);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-headers);
+            font-size: 2.8rem;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.2);
+        }
+
+        .author-info h3 {
+            font-family: var(--font-headers);
+            color: var(--light-gold);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .author-info p {
+            color: var(--text-secondary);
+            line-height: 1.65;
+            margin-bottom: 22px;
+            font-size: 0.97rem;
+        }
+
+        .author-social-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+            .author-block { flex-direction: column; align-items: center; text-align: center; }
+            .author-social-links { justify-content: center; }
+            .home-hero { flex-direction: column; align-items: center; text-align: center; padding: 40px 16px 32px; }
+            .home-hero-text { text-align: center; }
+            .home-hero p { margin: 0 auto 24px; }
+            .home-hero h1 { font-size: 1.6rem; }
+            .hero-buttons { justify-content: center; }
         }
     </style>
 </head>
@@ -466,50 +1012,134 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <button class="nav-btn active">Гайды</button>
+            <button class="nav-btn active" data-section="home">Главная</button>
+            <button class="nav-btn" data-section="solo">Закупы СОЛО</button>
+            <button class="nav-btn disabled" title="скоро...">Закупы ДУО</button>
+            <button class="nav-btn disabled" title="скоро...">Советы</button>
         </div>
     </nav>
 
     <main class="main-content">
-        <section class="section-container">
-            <div class="search-container">
-                <input type="text" id="class-search" placeholder="Поиск класса по названию...">
+
+        <!-- ===== ГЛАВНАЯ ===== -->
+        <div id="section-home" class="page-section">
+            <div class="home-hero">
+                <img id="sticker-wave" src="" alt="Лингидан машет рукой" style="width:clamp(160px, 20vw, 260px)" onerror="this.style.display='none'">
+                <div class="home-hero-text">
+                    <h1>Всем привет, с вами как всегда я, Лингидан!</h1>
+                    <p>Добро пожаловать — здесь я собрал всё самое важное по режиму КСК, пригодится и новичку, и опытному игроку.</p>
+                    <div class="hero-buttons">
+                        <button class="hero-cta-btn" onclick="switchNavTab('solo')">Перейти к закупам</button>
+                        <a href="https://t.me/Lingidan_TG" class="hero-secondary-btn" target="_blank" rel="noopener noreferrer">Telegram</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="layout-wrapper">
-                <div id="classes-grid" class="classes-grid"></div>
-
-                <aside id="class-panel" class="class-panel">
-                    <div class="panel-header">
-                        <h2 id="panel-class-name">Название</h2>
-                        <button id="panel-close-btn" class="close-btn">×</button>
+            <div class="videos-section">
+                <h2>Видео</h2>
+                <div class="video-latest-frame">
+                    <div class="video-latest-row">
+                        <img id="sticker-popcorn" src="" alt="Лингидан с попкорном смотрит видео"
+                             style="width:clamp(140px, 18vw, 220px)" onerror="this.style.display='none'">
+                        <div id="latest-video-wrap"></div>
                     </div>
-                    
-                    <div class="panel-tabs">
-                        <button class="tab-btn active" data-tab="all">Всё</button>
-                        <button class="tab-btn" data-tab="builds">Закуп</button>
-                        <button class="tab-btn" data-tab="tips">Советы</button>
-                        <button class="tab-btn" data-tab="counters">Как контрить</button>
-                    </div>
-
-                    <div class="panel-body">
-                        <div id="block-builds" class="info-block">
-                            <h3>Закупы</h3>
-                            <div id="builds-list"></div>
-                        </div>
-                        <div id="block-tips" class="info-block">
-                            <h3>Советы</h3>
-                            <ul id="tips-list" class="gold-markers"></ul>
-                        </div>
-                        <div id="block-counters" class="info-block">
-                            <h3>Как контрить</h3>
-                            <ul id="counters-list" class="burgundy-markers"></ul>
-                        </div>
-                    </div>
-                </aside>
+                    <p class="video-latest-hint">Не забудь ознакомиться с новым роликом на канале!</p>
+                </div>
             </div>
-        </section>
+
+            <div class="telegram-section">
+                <img id="sticker-table" src="" alt="Сообщество Telegram-канала Лингидан"
+                     onerror="this.style.display='none'">
+                <div class="telegram-content">
+                    <p>Присоединяйся к самому большому телеграм-каналу по КСК! Нас уже более 4000 — хелперы, поиск тимейтов и живое общение.</p>
+                    <a href="https://t.me/Lingidan_TG" class="home-card-btn" target="_blank" rel="noopener noreferrer">Подписаться</a>
+                </div>
+            </div>
+
+            <div class="telegram-section">
+                <img id="sticker-donate" src="" alt="Лингидан у стены с кружкой для монет"
+                     onerror="this.style.display='none'">
+                <div class="telegram-content">
+                    <p>Благодаря твоей поддержке этот канал и сайт до сих пор существуют. Спасибо каждому!</p>
+                    <a href="https://donatepay.ru/don/Lingidan" class="home-card-btn" target="_blank" rel="noopener noreferrer">Поддержать</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ЗАКУПЫ СОЛО ===== -->
+        <div id="section-solo" class="page-section hidden">
+            <section class="section-container">
+                <div class="search-container">
+                    <input type="text" id="class-search" placeholder="Поиск класса по названию...">
+                </div>
+
+                <div class="layout-wrapper">
+                    <div id="classes-grid" class="classes-grid"></div>
+
+                    <aside id="class-panel" class="class-panel">
+                        <div class="panel-header">
+                            <h2 id="panel-class-name">Название</h2>
+                            <button id="panel-close-btn" class="close-btn">×</button>
+                        </div>
+
+                        <div class="panel-tabs">
+                            <button class="tab-btn active" data-tab="all">Всё</button>
+                            <button class="tab-btn" data-tab="builds">Закуп</button>
+                            <button class="tab-btn" data-tab="tips">Советы</button>
+                            <button class="tab-btn" data-tab="counters">Как контрить</button>
+                        </div>
+
+                        <div class="panel-body">
+                            <div id="block-builds" class="info-block">
+                                <h3>Закупы</h3>
+                                <div id="builds-list"></div>
+                            </div>
+                            <div id="block-tips" class="info-block">
+                                <h3>Советы</h3>
+                                <ul id="tips-list" class="gold-markers"></ul>
+                            </div>
+                            <div id="block-counters" class="info-block">
+                                <h3>Как контрить</h3>
+                                <ul id="counters-list" class="burgundy-markers"></ul>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+        </div>
+
     </main>
+
+    <footer class="social-footer">
+        <p class="social-footer-title">Социальные сети автора</p>
+        <div class="social-links">
+            <a href="https://www.youtube.com/@lingidan" class="social-btn" target="_blank" rel="noopener noreferrer" title="YouTube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+            </a>
+            <a href="https://t.me/Lingidan_TG" class="social-btn" target="_blank" rel="noopener noreferrer" title="Telegram">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+            </a>
+            <a href="https://rutube.ru/channel/24954641/" class="social-btn" target="_blank" rel="noopener noreferrer" title="Rutube">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-2 16.5V7.5l8 4.5-8 4.5z"/>
+                </svg>
+            </a>
+            <a href="https://vkvideo.ru/@club238522602" class="social-btn" target="_blank" rel="noopener noreferrer" title="VK Видео">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.862-.523-2.049-1.713-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.677.864 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.643v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.253-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.27.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.49-.085.744-.576.744z"/>
+                </svg>
+            </a>
+            <a href="https://donatepay.ru/don/Lingidan" class="social-btn" target="_blank" rel="noopener noreferrer" title="Донат">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+            </a>
+        </div>
+    </footer>
 
     <div id="secret-update-trigger"></div>
 
@@ -530,6 +1160,8 @@
 
     <script>
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTJUnezlHjqNTBs6LlMvoDxvg8KyigoOZ5qQ-WJgTi7Hu_5yeiUJ2o55wwzWsprCdKElWeiyutCzrs5/pub?gid=801491780&single=true&output=csv";
+        const YOUTUBE_RSS_URL = "https://www.youtube.com/feeds/videos.xml?channel_id=UCRqlmyX3IOT0QCXyHr_tW3g";
+        const STICKERS_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTJUnezlHjqNTBs6LlMvoDxvg8KyigoOZ5qQ-WJgTi7Hu_5yeiUJ2o55wwzWsprCdKElWeiyutCzrs5/pub?gid=1190181864&single=true&output=csv";
 
         let currentClasses = [];
         let selectedClassId = null;
@@ -554,8 +1186,24 @@
         const syncNowBtn = document.getElementById('sync-now-btn');
         const syncStatus = document.getElementById('sync-status');
 
+        const sectionHome = document.getElementById('section-home');
+        const sectionSolo = document.getElementById('section-solo');
+        const navBtns = document.querySelectorAll('.nav-btn[data-section]');
+
+        function switchNavTab(name) {
+            navBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.section === name));
+            sectionHome.classList.toggle('hidden', name !== 'home');
+            sectionSolo.classList.toggle('hidden', name !== 'solo');
+            if (name !== 'solo') closePanel();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', () => switchNavTab(btn.dataset.section));
+            });
             loadClassesData();
+            loadStickersData();
+            fetchLatestYoutubeVideo();
             initEventListeners();
         });
 
@@ -565,7 +1213,7 @@
             if (localData) {
                 currentClasses = JSON.parse(localData);
                 renderGrid(currentClasses);
-                fetchSheetsData(true); 
+                fetchSheetsData(true);
             } else {
                 // Визуальный индикатор для новых пользователей перед началом автозагрузки
                 renderEmptyState("Загрузка базы данных Кристаликса...");
@@ -670,13 +1318,13 @@
             document.getElementById('block-tips').classList.toggle('hidden', !cls.tips || cls.tips.length === 0);
             document.getElementById('block-counters').classList.toggle('hidden', !cls.counters || cls.counters.length === 0);
 
-            classPanel.style.display = 'flex';
+            classPanel.classList.add('panel-visible');
         }
 
         function closePanel() {
             selectedClassId = null;
             document.querySelectorAll('.class-card').forEach(card => card.classList.remove('active'));
-            classPanel.style.display = 'none';
+            classPanel.classList.remove('panel-visible');
         }
 
         function switchTab(tabType) {
@@ -738,7 +1386,7 @@
                 }
             });
 
-            syncNowBtn.addEventListener('click', () => fetchSheetsData(false));
+            syncNowBtn.addEventListener('click', () => { fetchSheetsData(false); fetchStickersData(false); });
         }
 
         function showStatus(text, className) {
@@ -808,7 +1456,7 @@
             try {
                 const response = await fetch(GOOGLE_SHEET_CSV_URL + "&nocache=" + new Date().getTime());
                 if (!response.ok) throw new Error('Ошибка доступа к Google Таблице.');
-                
+
                 const rawText = await response.text();
                 const rows = parseCSV(rawText);
                 
@@ -873,6 +1521,96 @@
                     showStatus('Ошибка импорта: ' + error.message, 'status-error');
                 }
             }
+        }
+
+        /* ===== ВИДЕО ===== */
+        function getYoutubeId(url) {
+            if (!url) return null;
+            const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([^&\n?#]+)/);
+            return m ? m[1] : null;
+        }
+
+        function renderLatestVideo(video) {
+            const wrap = document.getElementById('latest-video-wrap');
+            const thumb = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
+            wrap.innerHTML = `
+                <a class="latest-video-card" href="${video.url}" target="_blank" rel="noopener noreferrer">
+                    <div class="latest-thumb-wrap">
+                        <img src="${thumb}" alt="${video.title}"
+                             onerror="this.style.background='#1a0505';this.removeAttribute('src')">
+                        <span class="new-badge">НОВОЕ</span>
+                        <div class="play-overlay">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    <div class="latest-video-info">
+                        <span class="latest-video-label">Последнее видео</span>
+                        <span class="latest-video-title">${video.title}</span>
+                        <span class="watch-btn">Смотреть →</span>
+                    </div>
+                </a>`;
+        }
+
+        async function fetchLatestYoutubeVideo() {
+            try {
+                const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(YOUTUBE_RSS_URL)}`;
+                const resp = await fetch(proxy);
+                if (!resp.ok) return;
+                const json = await resp.json();
+                const xml = new DOMParser().parseFromString(json.contents, 'text/xml');
+                const entry = xml.querySelector('entry');
+                if (!entry) return;
+                const videoId = entry.getElementsByTagNameNS('http://www.youtube.com/xml/schemas/2015', 'videoId')[0]?.textContent;
+                const title   = entry.querySelector('title')?.textContent;
+                const url     = entry.querySelector('link')?.getAttribute('href');
+                if (videoId && title && url) renderLatestVideo({ id: videoId, title, url });
+            } catch (e) {
+                console.warn('RSS fetch failed:', e);
+            }
+        }
+
+        /* ===== СТИКЕРЫ ===== */
+        const STICKER_LABEL_MAP = {
+            "Стикер привет:":    "sticker-wave",
+            "Стикер ролик:":     "sticker-popcorn",
+            "Стикер телеграм:":  "sticker-table",
+            "Стикер донат:":     "sticker-donate"
+        };
+
+        function applyStickers(map) {
+            Object.entries(map).forEach(([id, url]) => {
+                if (!url) return;
+                const el = document.getElementById(id);
+                if (el) el.src = url;
+            });
+        }
+
+        function loadStickersData() {
+            const saved = localStorage.getItem('csk_stickers_data');
+            if (saved) {
+                try { applyStickers(JSON.parse(saved)); } catch {}
+            }
+            fetchStickersData(true);
+        }
+
+        async function fetchStickersData(isBackground = false) {
+            if (STICKERS_SHEET_CSV_URL.includes('ПРИЛОЖЕНИЯ_GID')) return;
+            try {
+                const resp = await fetch(STICKERS_SHEET_CSV_URL + '&nocache=' + Date.now());
+                if (!resp.ok) return;
+                const rows = parseCSV(await resp.text()).slice(1);
+                const data = {};
+                rows.forEach(r => {
+                    const label = (r[0] || '').trim();
+                    const url   = cleanDriveUrl((r[1] || '').trim());
+                    const id    = STICKER_LABEL_MAP[label];
+                    if (id && url) data[id] = url;
+                });
+                if (Object.keys(data).length > 0) {
+                    localStorage.setItem('csk_stickers_data', JSON.stringify(data));
+                    applyStickers(data);
+                }
+            } catch {}
         }
 
         function processBuildRow(row, pvpIdx, pveIdx, buildObject) {
