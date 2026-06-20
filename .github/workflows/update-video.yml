@@ -1,0 +1,40 @@
+name: Update latest video
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-video:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch latest video from YouTube RSS
+        run: |
+          python3 - <<'EOF'
+          import urllib.request, xml.etree.ElementTree as ET, json, os
+
+          url = "https://www.youtube.com/feeds/videos.xml?channel_id=UCRqlmyX3IOT0QCXyHr_tW3g"
+          ns = {
+              'atom': 'http://www.w3.org/2005/Atom',
+              'yt': 'http://www.youtube.com/xml/schemas/2015'
+          }
+          data = urllib.request.urlopen(url).read()
+          root = ET.fromstring(data)
+          entry = root.find('atom:entry', ns)
+          video_id = entry.find('yt:videoId', ns).text
+          title = entry.find('atom:title', ns).text
+          link = entry.find('atom:link', ns).attrib['href']
+
+          os.makedirs('data', exist_ok=True)
+          with open('data/latest-video.json', 'w', encoding='utf-8') as f:
+              json.dump({"id": video_id, "title": title, "url": link}, f, ensure_ascii=False)
+          EOF
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/latest-video.json
+          git diff --cached --quiet || git commit -m "chore: update latest video data"
+          git push
