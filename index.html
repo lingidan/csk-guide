@@ -1588,19 +1588,12 @@
 
         async function fetchLatestYoutubeVideo() {
             try {
-                const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(YOUTUBE_RSS_URL)}`;
-                const resp = await fetch(proxy);
+                const resp = await fetch('./data/latest-video.json');
                 if (!resp.ok) return;
-                const json = await resp.json();
-                const xml = new DOMParser().parseFromString(json.contents, 'text/xml');
-                const entry = xml.querySelector('entry');
-                if (!entry) return;
-                const videoId = entry.getElementsByTagNameNS('http://www.youtube.com/xml/schemas/2015', 'videoId')[0]?.textContent;
-                const title   = entry.querySelector('title')?.textContent;
-                const url     = entry.querySelector('link')?.getAttribute('href');
-                if (videoId && title && url) renderLatestVideo({ id: videoId, title, url });
+                const data = await resp.json();
+                if (data.id && data.title && data.url) renderLatestVideo(data);
             } catch (e) {
-                console.warn('RSS fetch failed:', e);
+                console.warn('Video data fetch failed:', e);
             }
         }
 
