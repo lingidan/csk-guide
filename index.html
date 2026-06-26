@@ -11,7 +11,8 @@
     <style>
         :root {
             --bg-main: #0e0303;
-            --bg-gradient-end: #1a0505;
+            --bg-gradient-start: #1c0606;
+            --bg-gradient-end: #030101;
             --bg-panel: #200808;
             --accent-burgundy: #8B1A1A;
             --accent-gold: #D4AF37;
@@ -47,7 +48,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-main), var(--bg-gradient-end));
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
             color: var(--text-main);
             font-family: var(--font-body);
             min-height: 100vh;
@@ -71,12 +72,13 @@
             margin: 0 auto;
             padding: 12px 20px;
             display: flex;
+            align-items: center;
         }
 
         .nav-btn {
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-family: var(--font-headers);
             font-size: 1.1rem;
             font-weight: 700;
@@ -142,7 +144,7 @@
 
         .layout-wrapper {
             display: flex;
-            gap: 25px;
+            gap: 0;
             position: relative;
             align-items: flex-start;
             flex: 1;
@@ -199,7 +201,8 @@
         }
 
         .class-panel {
-            width: 40%;
+            flex: 0 0 0;
+            min-width: 0;
             background: var(--bg-panel);
             border: 1px solid var(--border-gold);
             border-radius: 6px;
@@ -215,8 +218,10 @@
             max-width: 0;
             opacity: 0;
             pointer-events: none;
-            transition: max-width 0.75s cubic-bezier(0.4, 0, 0.2, 1),
-                        opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: flex-basis 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+                        max-width 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                        margin-left 0.75s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .panel-header {
@@ -471,9 +476,11 @@
         }
 
         .class-panel.panel-visible {
+            flex: 0 0 40%;
             max-width: 1000px;
             opacity: 1;
             pointer-events: auto;
+            margin-left: 25px;
         }
 
         .social-footer {
@@ -533,7 +540,6 @@
 
         /* ===== NAV DISABLED ===== */
         .nav-btn.disabled {
-            opacity: 0.4;
             cursor: default;
             pointer-events: none;
         }
@@ -1023,6 +1029,343 @@
             .home-hero h1 { font-size: 1.6rem; }
             .hero-buttons { justify-content: center; }
         }
+
+        /* ===== ТЕМЫ ===== */
+
+        /* Dusk Violet — тёмно-фиолетовая (палитра E0B1CB → 231942) */
+        [data-theme="blue"] {
+            --bg-gradient-start: #2d2258;
+            --bg-main: #1e1540;
+            --bg-gradient-end: #0f0a20;
+            --bg-panel: #2a1c4e;
+            --accent-burgundy: #5E548E;
+            --accent-gold: #9F86C0;
+            --light-gold: #BE95C4;
+            --text-main: #E0B1CB;
+            --text-secondary: #9F86C0;
+            --text-muted: #5E548E;
+            --border-gold: rgba(159, 134, 192, 0.2);
+        }
+        [data-theme="blue"] .navbar { background: rgba(30, 21, 64, 0.92); }
+        [data-theme="blue"] .tab-btn { background: rgba(30, 21, 64, 0.5); }
+        [data-theme="blue"] .tab-btn.active { color: #E0B1CB !important; background: rgba(159, 134, 192, 0.25) !important; border-color: rgba(159, 134, 192, 0.6) !important; }
+        [data-theme="blue"] .build-group { background: rgba(30, 21, 64, 0.4); }
+        [data-theme="blue"] .social-footer { background: rgba(30, 21, 64, 0.5); }
+
+        /* Slate Lavender — светлая лавандовая */
+        [data-theme="green"] {
+            --bg-gradient-start: #f5f2ff;
+            --bg-main: #ebe6f8;
+            --bg-gradient-end: #c8c0e0;
+            --bg-panel: #ddd8f0;
+            --accent-burgundy: #8070c0;
+            --accent-gold: #6050a8;
+            --light-gold: #4a3a90;
+            --text-main: #1a1830;
+            --text-secondary: #50408a;
+            --text-muted: #9080c0;
+            --border-gold: rgba(96, 80, 168, 0.25);
+        }
+        [data-theme="green"] .navbar { background: rgba(235, 230, 248, 0.92); }
+        [data-theme="green"] .tab-btn { background: rgba(235, 230, 248, 0.5); }
+        [data-theme="green"] .tab-btn.active { color: #1a1a1a !important; background: rgba(96, 80, 168, 0.18) !important; border-color: rgba(96, 80, 168, 0.5) !important; }
+        [data-theme="green"] .build-group { background: rgba(235, 230, 248, 0.4); }
+        [data-theme="green"] .social-footer { background: rgba(235, 230, 248, 0.5); }
+
+        /* Sand Dune — бежево-коричневая (палитра E7E3DB → 382E25) */
+        [data-theme="grey"] {
+            --bg-gradient-start: #f0ece4;
+            --bg-main: #e7e3db;
+            --bg-gradient-end: #b8a898;
+            --bg-panel: #d8d0c4;
+            --accent-burgundy: #8a6a50;
+            --accent-gold: #6B5B4C;
+            --light-gold: #382E25;
+            --text-main: #1a100a;
+            --text-secondary: #4a3828;
+            --text-muted: #8a7060;
+            --border-gold: rgba(107, 91, 76, 0.25);
+        }
+        [data-theme="grey"] .navbar { background: rgba(231, 227, 219, 0.92); }
+        [data-theme="grey"] .tab-btn { background: rgba(231, 227, 219, 0.5); }
+        [data-theme="grey"] .tab-btn.active { color: #1a1a1a !important; background: rgba(107, 91, 76, 0.2) !important; border-color: rgba(107, 91, 76, 0.5) !important; }
+        [data-theme="grey"] .build-group { background: rgba(231, 227, 219, 0.4); }
+        [data-theme="grey"] .social-footer { background: rgba(231, 227, 219, 0.5); }
+
+        /* Ocean Teal — тёмная бирюзовая (палитра 140C30 → 16A085) */
+        [data-theme="teal"] {
+            --bg-gradient-start: #1a3348;
+            --bg-main: #14253E;
+            --bg-gradient-end: #080f1a;
+            --bg-panel: #153D4C;
+            --accent-burgundy: #15565B;
+            --accent-gold: #16A085;
+            --light-gold: #1abc9c;
+            --text-main: #d0f0ea;
+            --text-secondary: #16A085;
+            --text-muted: #15565B;
+            --border-gold: rgba(22, 160, 133, 0.2);
+        }
+        [data-theme="teal"] .navbar { background: rgba(20, 37, 62, 0.92); }
+        [data-theme="teal"] .tab-btn { background: rgba(20, 37, 62, 0.5); }
+        [data-theme="teal"] .tab-btn.active { color: #d0f0ea !important; background: rgba(22, 160, 133, 0.2) !important; border-color: rgba(22, 160, 133, 0.6) !important; }
+        [data-theme="teal"] .build-group { background: rgba(20, 37, 62, 0.4); }
+        [data-theme="teal"] .social-footer { background: rgba(20, 37, 62, 0.5); }
+
+        /* Sky Mist — светло-голубая */
+        [data-theme="sky"] {
+            --bg-gradient-start: #f0f6ff;
+            --bg-main: #dde8f5;
+            --bg-gradient-end: #b0c8e0;
+            --bg-panel: #c8daf0;
+            --accent-burgundy: #7aaad0;
+            --accent-gold: #4a7aaa;
+            --light-gold: #2a5a88;
+            --text-main: #0a1828;
+            --text-secondary: #2a5a88;
+            --text-muted: #7aaad0;
+            --border-gold: rgba(74, 122, 170, 0.25);
+        }
+        [data-theme="sky"] .navbar { background: rgba(221, 232, 245, 0.92); }
+        [data-theme="sky"] .tab-btn { background: rgba(221, 232, 245, 0.5); }
+        [data-theme="sky"] .tab-btn.active { color: #1a1a1a !important; background: rgba(74, 122, 170, 0.18) !important; border-color: rgba(74, 122, 170, 0.5) !important; }
+        [data-theme="sky"] .build-group { background: rgba(221, 232, 245, 0.4); }
+        [data-theme="sky"] .social-footer { background: rgba(221, 232, 245, 0.5); }
+
+        /* Neon Synthwave — ядерный розово-фиолетовый неон */
+        [data-theme="neon1"] {
+            --bg-gradient-start: #12002a;
+            --bg-main: #07000f;
+            --bg-gradient-end: #020005;
+            --bg-panel: #0f0020;
+            --accent-burgundy: #6600cc;
+            --accent-gold: #FF1CC0;
+            --light-gold: #df60ff;
+            --text-main: #ffe0f8;
+            --text-secondary: #FF1CC0;
+            --text-muted: #7700bb;
+            --border-gold: rgba(255, 28, 192, 0.45);
+        }
+        [data-theme="neon1"] .navbar { background: rgba(7, 0, 15, 0.95); border-bottom-color: rgba(255, 28, 192, 0.5); }
+        [data-theme="neon1"] .tab-btn { background: rgba(7, 0, 15, 0.6); }
+        [data-theme="neon1"] .tab-btn.active { color: #FF1CC0 !important; background: rgba(255, 28, 192, 0.15) !important; border-color: #FF1CC0 !important; box-shadow: 0 0 10px rgba(255, 28, 192, 0.6) !important; }
+        [data-theme="neon1"] .build-group { background: rgba(7, 0, 15, 0.5); border-color: rgba(255, 28, 192, 0.12); }
+        [data-theme="neon1"] .social-footer { background: rgba(7, 0, 15, 0.6); }
+        [data-theme="neon1"] .class-panel { border-color: rgba(255, 28, 192, 0.5); box-shadow: 0 0 40px rgba(255, 28, 192, 0.2), inset 0 0 20px rgba(255, 28, 192, 0.04); }
+        [data-theme="neon1"] .class-card { border-color: rgba(255, 28, 192, 0.2); }
+        [data-theme="neon1"] .class-card:hover { border-color: #FF1CC0; box-shadow: 0 0 16px rgba(255, 28, 192, 0.55); }
+        [data-theme="neon1"] .class-card.active { border-color: #FF1CC0; box-shadow: 0 0 28px rgba(255, 28, 192, 0.85); }
+        [data-theme="neon1"] .search-container input:focus { border-color: #FF1CC0; box-shadow: 0 0 18px rgba(255, 28, 192, 0.45); }
+        [data-theme="neon1"] .nav-btn.active { text-shadow: 0 0 14px rgba(255, 28, 192, 0.8); }
+        [data-theme="neon1"] .nav-btn.active::after { background: #FF1CC0; box-shadow: 0 0 14px #FF1CC0; }
+
+        /* Neon Cyber — ядерный бирюзово-зелёный неон */
+        [data-theme="neon2"] {
+            --bg-gradient-start: #001a14;
+            --bg-main: #00080a;
+            --bg-gradient-end: #000205;
+            --bg-panel: #001018;
+            --accent-burgundy: #005544;
+            --accent-gold: #00FFE5;
+            --light-gold: #61E086;
+            --text-main: #ccfff8;
+            --text-secondary: #00FFE5;
+            --text-muted: #006655;
+            --border-gold: rgba(0, 255, 229, 0.4);
+        }
+        [data-theme="neon2"] .navbar { background: rgba(0, 8, 10, 0.95); border-bottom-color: rgba(0, 255, 229, 0.45); }
+        [data-theme="neon2"] .tab-btn { background: rgba(0, 8, 10, 0.6); }
+        [data-theme="neon2"] .tab-btn.active { color: #00FFE5 !important; background: rgba(0, 255, 229, 0.12) !important; border-color: #00FFE5 !important; box-shadow: 0 0 10px rgba(0, 255, 229, 0.6) !important; }
+        [data-theme="neon2"] .build-group { background: rgba(0, 8, 10, 0.5); border-color: rgba(0, 255, 229, 0.1); }
+        [data-theme="neon2"] .social-footer { background: rgba(0, 8, 10, 0.6); }
+        [data-theme="neon2"] .class-panel { border-color: rgba(0, 255, 229, 0.45); box-shadow: 0 0 40px rgba(0, 255, 229, 0.18), inset 0 0 20px rgba(0, 255, 229, 0.04); }
+        [data-theme="neon2"] .class-card { border-color: rgba(0, 255, 229, 0.18); }
+        [data-theme="neon2"] .class-card:hover { border-color: #00FFE5; box-shadow: 0 0 16px rgba(0, 255, 229, 0.55); }
+        [data-theme="neon2"] .class-card.active { border-color: #00FFE5; box-shadow: 0 0 28px rgba(0, 255, 229, 0.85); }
+        [data-theme="neon2"] .search-container input:focus { border-color: #00FFE5; box-shadow: 0 0 18px rgba(0, 255, 229, 0.45); }
+        [data-theme="neon2"] .nav-btn.active { text-shadow: 0 0 14px rgba(0, 255, 229, 0.8); }
+        [data-theme="neon2"] .nav-btn.active::after { background: #00FFE5; box-shadow: 0 0 14px #00FFE5; }
+
+        /* Neon Orange — оранжево-красный неон */
+        [data-theme="neon3"] {
+            --bg-gradient-start: #1a0800;
+            --bg-main: #0a0300;
+            --bg-gradient-end: #030100;
+            --bg-panel: #150600;
+            --accent-burgundy: #aa3300;
+            --accent-gold: #FF5500;
+            --light-gold: #FF9900;
+            --text-main: #fff0e0;
+            --text-secondary: #FF5500;
+            --text-muted: #882200;
+            --border-gold: rgba(255, 85, 0, 0.45);
+        }
+        [data-theme="neon3"] .navbar { background: rgba(10, 3, 0, 0.95); border-bottom-color: rgba(255, 85, 0, 0.5); }
+        [data-theme="neon3"] .tab-btn { background: rgba(10, 3, 0, 0.6); }
+        [data-theme="neon3"] .tab-btn.active { color: #FF5500 !important; background: rgba(255, 85, 0, 0.15) !important; border-color: #FF5500 !important; box-shadow: 0 0 10px rgba(255, 85, 0, 0.6) !important; }
+        [data-theme="neon3"] .build-group { background: rgba(10, 3, 0, 0.5); border-color: rgba(255, 85, 0, 0.12); }
+        [data-theme="neon3"] .social-footer { background: rgba(10, 3, 0, 0.6); }
+        [data-theme="neon3"] .class-panel { border-color: rgba(255, 85, 0, 0.5); box-shadow: 0 0 40px rgba(255, 85, 0, 0.2), inset 0 0 20px rgba(255, 85, 0, 0.04); }
+        [data-theme="neon3"] .class-card { border-color: rgba(255, 85, 0, 0.2); }
+        [data-theme="neon3"] .class-card:hover { border-color: #FF5500; box-shadow: 0 0 16px rgba(255, 85, 0, 0.55); }
+        [data-theme="neon3"] .class-card.active { border-color: #FF5500; box-shadow: 0 0 28px rgba(255, 85, 0, 0.85); }
+        [data-theme="neon3"] .search-container input:focus { border-color: #FF5500; box-shadow: 0 0 18px rgba(255, 85, 0, 0.45); }
+        [data-theme="neon3"] .nav-btn.active { text-shadow: 0 0 14px rgba(255, 85, 0, 0.8); }
+        [data-theme="neon3"] .nav-btn.active::after { background: #FF5500; box-shadow: 0 0 14px #FF5500; }
+
+        /* Neon Electric Blue — ультра-синий неон */
+        [data-theme="neon4"] {
+            --bg-gradient-start: #00001a;
+            --bg-main: #00000f;
+            --bg-gradient-end: #000005;
+            --bg-panel: #000018;
+            --accent-burgundy: #001a88;
+            --accent-gold: #1A8CFF;
+            --light-gold: #66CCFF;
+            --text-main: #d0e8ff;
+            --text-secondary: #1A8CFF;
+            --text-muted: #003388;
+            --border-gold: rgba(26, 140, 255, 0.45);
+        }
+        [data-theme="neon4"] .navbar { background: rgba(0, 0, 15, 0.95); border-bottom-color: rgba(26, 140, 255, 0.5); }
+        [data-theme="neon4"] .tab-btn { background: rgba(0, 0, 15, 0.6); }
+        [data-theme="neon4"] .tab-btn.active { color: #1A8CFF !important; background: rgba(26, 140, 255, 0.15) !important; border-color: #1A8CFF !important; box-shadow: 0 0 10px rgba(26, 140, 255, 0.6) !important; }
+        [data-theme="neon4"] .build-group { background: rgba(0, 0, 15, 0.5); border-color: rgba(26, 140, 255, 0.1); }
+        [data-theme="neon4"] .social-footer { background: rgba(0, 0, 15, 0.6); }
+        [data-theme="neon4"] .class-panel { border-color: rgba(26, 140, 255, 0.5); box-shadow: 0 0 40px rgba(26, 140, 255, 0.2), inset 0 0 20px rgba(26, 140, 255, 0.04); }
+        [data-theme="neon4"] .class-card { border-color: rgba(26, 140, 255, 0.2); }
+        [data-theme="neon4"] .class-card:hover { border-color: #1A8CFF; box-shadow: 0 0 16px rgba(26, 140, 255, 0.55); }
+        [data-theme="neon4"] .class-card.active { border-color: #1A8CFF; box-shadow: 0 0 28px rgba(26, 140, 255, 0.85); }
+        [data-theme="neon4"] .search-container input:focus { border-color: #1A8CFF; box-shadow: 0 0 18px rgba(26, 140, 255, 0.45); }
+        [data-theme="neon4"] .nav-btn.active { text-shadow: 0 0 14px rgba(26, 140, 255, 0.8); }
+        [data-theme="neon4"] .nav-btn.active::after { background: #1A8CFF; box-shadow: 0 0 14px #1A8CFF; }
+
+        /* Neon Lime — кислотно-жёлтый неон */
+        [data-theme="neon5"] {
+            --bg-gradient-start: #060f00;
+            --bg-main: #020800;
+            --bg-gradient-end: #010300;
+            --bg-panel: #050d00;
+            --accent-burgundy: #2a5500;
+            --accent-gold: #AAFF00;
+            --light-gold: #DDFF44;
+            --text-main: #f0ffe0;
+            --text-secondary: #AAFF00;
+            --text-muted: #3a7700;
+            --border-gold: rgba(170, 255, 0, 0.45);
+        }
+        [data-theme="neon5"] .navbar { background: rgba(2, 8, 0, 0.95); border-bottom-color: rgba(170, 255, 0, 0.5); }
+        [data-theme="neon5"] .tab-btn { background: rgba(2, 8, 0, 0.6); }
+        [data-theme="neon5"] .tab-btn.active { color: #AAFF00 !important; background: rgba(170, 255, 0, 0.12) !important; border-color: #AAFF00 !important; box-shadow: 0 0 10px rgba(170, 255, 0, 0.6) !important; }
+        [data-theme="neon5"] .build-group { background: rgba(2, 8, 0, 0.5); border-color: rgba(170, 255, 0, 0.1); }
+        [data-theme="neon5"] .social-footer { background: rgba(2, 8, 0, 0.6); }
+        [data-theme="neon5"] .class-panel { border-color: rgba(170, 255, 0, 0.5); box-shadow: 0 0 40px rgba(170, 255, 0, 0.18), inset 0 0 20px rgba(170, 255, 0, 0.04); }
+        [data-theme="neon5"] .class-card { border-color: rgba(170, 255, 0, 0.2); }
+        [data-theme="neon5"] .class-card:hover { border-color: #AAFF00; box-shadow: 0 0 16px rgba(170, 255, 0, 0.55); }
+        [data-theme="neon5"] .class-card.active { border-color: #AAFF00; box-shadow: 0 0 28px rgba(170, 255, 0, 0.85); }
+        [data-theme="neon5"] .search-container input:focus { border-color: #AAFF00; box-shadow: 0 0 18px rgba(170, 255, 0, 0.45); }
+        [data-theme="neon5"] .nav-btn.active { text-shadow: 0 0 14px rgba(170, 255, 0, 0.8); }
+        [data-theme="neon5"] .nav-btn.active::after { background: #AAFF00; box-shadow: 0 0 14px #AAFF00; }
+
+        /* ===== КНОПКА ТЕМЫ ===== */
+        .theme-toggle-wrap {
+            margin-left: auto;
+            position: relative;
+        }
+
+        .theme-toggle-btn {
+            height: 32px;
+            padding: 0 14px;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            font-family: var(--font-headers);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            transition: border-color 0.2s, box-shadow 0.2s, color 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+            color: var(--light-gold);
+        }
+
+        .theme-picker {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-gold);
+            border-radius: 10px;
+            padding: 12px;
+            z-index: 500;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-6px);
+            transition: opacity 0.2s, transform 0.2s;
+            min-width: 320px;
+        }
+
+        .theme-picker.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .theme-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .theme-option:hover {
+            background: rgba(255,255,255,0.06);
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-gold);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .theme-palette {
+            display: flex;
+            width: 56px;
+            height: 34px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.12);
+            flex-shrink: 0;
+        }
+
+        .theme-palette span {
+            flex: 1;
+            display: block;
+        }
+
+        .theme-name {
+            font-size: 0.62rem;
+            color: var(--text-secondary);
+            font-family: var(--font-body);
+            text-align: center;
+            line-height: 1.3;
+            word-break: break-word;
+        }
     </style>
 </head>
 <body>
@@ -1033,6 +1376,55 @@
             <button class="nav-btn" data-section="solo">Закупы СОЛО</button>
             <button class="nav-btn disabled" title="скоро...">Закупы ДУО</button>
             <button class="nav-btn disabled" title="скоро...">Советы</button>
+            <div class="theme-toggle-wrap">
+                <button class="theme-toggle-btn" id="theme-toggle-btn" title="Сменить тему">Темы</button>
+                <div class="theme-picker" id="theme-picker">
+                    <div class="theme-option" data-theme="">
+                        <div class="theme-palette"><span style="background:#0e0303"></span><span style="background:#8B1A1A"></span><span style="background:#D4AF37"></span></div>
+                        <span class="theme-name">Crimson Gold</span>
+                    </div>
+                    <div class="theme-option" data-theme="blue">
+                        <div class="theme-palette"><span style="background:#1e1540"></span><span style="background:#5E548E"></span><span style="background:#BE95C4"></span></div>
+                        <span class="theme-name">Dusk Violet</span>
+                    </div>
+                    <div class="theme-option" data-theme="teal">
+                        <div class="theme-palette"><span style="background:#14253E"></span><span style="background:#16A085"></span><span style="background:#1abc9c"></span></div>
+                        <span class="theme-name">Ocean Teal</span>
+                    </div>
+                    <div class="theme-option" data-theme="green">
+                        <div class="theme-palette"><span style="background:#ebe6f8"></span><span style="background:#6050a8"></span><span style="background:#4a3a90"></span></div>
+                        <span class="theme-name">Slate Lavender</span>
+                    </div>
+                    <div class="theme-option" data-theme="grey">
+                        <div class="theme-palette"><span style="background:#e7e3db"></span><span style="background:#6B5B4C"></span><span style="background:#382E25"></span></div>
+                        <span class="theme-name">Sand Dune</span>
+                    </div>
+                    <div class="theme-option" data-theme="sky">
+                        <div class="theme-palette"><span style="background:#dde8f5"></span><span style="background:#4a7aaa"></span><span style="background:#2a5a88"></span></div>
+                        <span class="theme-name">Sky Mist</span>
+                    </div>
+                    <div class="theme-option" data-theme="neon1">
+                        <div class="theme-palette"><span style="background:#07000f"></span><span style="background:#FF1CC0"></span><span style="background:#df60ff"></span></div>
+                        <span class="theme-name">Neon Synthwave</span>
+                    </div>
+                    <div class="theme-option" data-theme="neon2">
+                        <div class="theme-palette"><span style="background:#00080a"></span><span style="background:#00FFE5"></span><span style="background:#61E086"></span></div>
+                        <span class="theme-name">Neon Cyber</span>
+                    </div>
+                    <div class="theme-option" data-theme="neon3">
+                        <div class="theme-palette"><span style="background:#0a0300"></span><span style="background:#FF5500"></span><span style="background:#FF9900"></span></div>
+                        <span class="theme-name">Neon Orange</span>
+                    </div>
+                    <div class="theme-option" data-theme="neon4">
+                        <div class="theme-palette"><span style="background:#00000f"></span><span style="background:#1A8CFF"></span><span style="background:#66CCFF"></span></div>
+                        <span class="theme-name">Neon Electric</span>
+                    </div>
+                    <div class="theme-option" data-theme="neon5">
+                        <div class="theme-palette"><span style="background:#020800"></span><span style="background:#AAFF00"></span><span style="background:#DDFF44"></span></div>
+                        <span class="theme-name">Neon Lime</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -1169,6 +1561,7 @@
 
     <div id="secret-update-trigger"></div>
 
+
     <div id="update-modal" class="modal">
         <div class="modal-content">
             <button id="modal-close-btn" class="close-btn" style="position: absolute; top: 10px; right: 15px;">×</button>
@@ -1231,6 +1624,7 @@
             loadStickersData();
             fetchLatestYoutubeVideo();
             initEventListeners();
+            initTiltEffect();
         });
 
         function loadClassesData() {
@@ -1375,6 +1769,36 @@
                     blocks[key].classList.toggle('hidden', key !== tabType);
                 });
             }
+        }
+
+        function initTiltEffect() {
+            let tiltCard = null;
+
+            gridContainer.addEventListener('mousemove', (e) => {
+                const card = e.target.closest('.class-card');
+                if (card !== tiltCard) {
+                    if (tiltCard) {
+                        tiltCard.style.transition = 'transform 0.35s ease, border-color 0.25s ease, box-shadow 0.25s ease';
+                        tiltCard.style.transform = '';
+                        tiltCard = null;
+                    }
+                    tiltCard = card;
+                }
+                if (!card) return;
+                card.style.transition = 'transform 0.05s ease, border-color 0.25s ease, box-shadow 0.25s ease';
+                const rect = card.getBoundingClientRect();
+                const dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+                const dy = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+                card.style.transform = `perspective(500px) rotateX(${-dy * 14}deg) rotateY(${dx * 14}deg) translateY(-4px) scale(1.04)`;
+            });
+
+            gridContainer.addEventListener('mouseleave', () => {
+                if (tiltCard) {
+                    tiltCard.style.transition = 'transform 0.35s ease, border-color 0.25s ease, box-shadow 0.25s ease';
+                    tiltCard.style.transform = '';
+                    tiltCard = null;
+                }
+            });
         }
 
         function initEventListeners() {
@@ -1641,6 +2065,75 @@
                 }
             } catch {}
         }
+
+        /* ===== ТЕМЫ ===== */
+        (function() {
+            const btn = document.getElementById('theme-toggle-btn');
+            const picker = document.getElementById('theme-picker');
+            const options = picker.querySelectorAll('.theme-option');
+            const html = document.documentElement;
+
+            const themeFaviconColors = {
+                '':      { bg: '#8B1A1A', crown: '#D4AF37' },
+                'blue':  { bg: '#2a1c4e', crown: '#BE95C4' },
+                'teal':  { bg: '#153D4C', crown: '#1abc9c' },
+                'neon1': { bg: '#1c0038', crown: '#FF1CC0' },
+                'neon2': { bg: '#001018', crown: '#00FFE5' },
+                'green': { bg: '#6050a8', crown: '#ede8ff' },
+                'grey':  { bg: '#6B5B4C', crown: '#E7E3DB' },
+                'sky':   { bg: '#4a7aaa', crown: '#dde8f5' },
+                'neon3': { bg: '#150600', crown: '#FF5500' },
+                'neon4': { bg: '#000018', crown: '#1A8CFF' },
+                'neon5': { bg: '#050d00', crown: '#AAFF00' },
+            };
+
+            function updateFavicon(theme) {
+                const c = themeFaviconColors[theme] || themeFaviconColors[''];
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                  <rect width="32" height="32" rx="5" fill="${c.bg}"/>
+                  <path d="M5,25 L5,13 L10.5,18.5 L16,7 L21.5,18.5 L27,13 L27,25 Z" fill="${c.crown}"/>
+                  <rect x="5" y="23" width="22" height="3.5" rx="1.5" fill="${c.crown}"/>
+                  <circle cx="5" cy="13" r="2" fill="${c.crown}"/>
+                  <circle cx="16" cy="7" r="2" fill="${c.crown}"/>
+                  <circle cx="27" cy="13" r="2" fill="${c.crown}"/>
+                </svg>`;
+                const encoded = 'data:image/svg+xml,' + encodeURIComponent(svg);
+                let link = document.querySelector("link[rel='icon']");
+                if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+                link.type = 'image/svg+xml';
+                link.href = encoded;
+            }
+
+            function applyTheme(theme) {
+                if (theme) html.setAttribute('data-theme', theme);
+                else html.removeAttribute('data-theme');
+                options.forEach(o => o.classList.toggle('active', o.dataset.theme === theme));
+                localStorage.setItem('csk_theme', theme);
+                updateFavicon(theme);
+            }
+
+            const saved = localStorage.getItem('csk_theme');
+            if (saved !== null) applyTheme(saved);
+            else options[0].classList.add('active');
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                picker.classList.toggle('open');
+            });
+
+            options.forEach(o => {
+                o.addEventListener('click', () => {
+                    applyTheme(o.dataset.theme);
+                    picker.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!picker.contains(e.target) && e.target !== btn) {
+                    picker.classList.remove('open');
+                }
+            });
+        })();
 
         function processBuildRow(row, pvpIdx, pveIdx, buildObject) {
             let pvpItem = row[pvpIdx] ? row[pvpIdx].trim().replace(/^["']|["']$/g, '') : '';
